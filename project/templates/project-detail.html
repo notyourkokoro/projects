@@ -1,0 +1,89 @@
+{% extends 'base-login.html' %}
+
+{% block title %}
+{{ project.name }}
+{% endblock %}
+
+{% block body %}
+<div class="container content">
+    <h1>{{ project.title }}</h1>
+    <div class="alert alert-secondary">
+        {% if project.description %}
+        <p>Project description: {{ project.description }}</p>
+        {% else %}
+        <p>There is no description of the project</p>
+        {% endif %}
+
+        <ol class="list-group list-group-numbered">
+        {% for task in project.tasks %}
+            {% if status_id == 2 or user_id == task.user_id %}
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{ task.title }}</div>
+                        <p>{{ task.created_date }} / {{ task.last_modified_date }}</p>
+                        <p>{{ task.description }}</p>
+
+                        {% if status_id == 2 %}
+                            <a href="/projects/{{ project.id }}/{{ task.id }}/del" class="btn btn-link">Delete</a>
+                        {% endif %}
+
+                        {% if task.approve == 0 and status_id == 2 %}
+                            <a href="/projects/{{ project.id }}/{{ task.id }}/approve" class="btn btn-link">Approve</a>
+                        {% endif %}
+
+                        {% if user_id == task.user_id and task.status == 'not completed' %}
+                            <a href="/projects/{{ project.id }}/{{ task.id }}/update" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Take a task</a>
+                        {% endif %}
+
+                        {% if user_id == task.user_id and task.status == 'in progress' and task.approve == 1 %}
+                            <a href="/projects/{{ project.id }}/{{ task.id }}/update" class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Complete task</a>
+                        {% endif %}
+
+                    </div>
+
+                    {% if task.status == 'not completed' %}
+                        <span class="badge bg-danger rounded-pill">{{ task.status }}</span>
+                    {% elif task.status == 'in progress' %}
+                        <span class="badge bg-primary rounded-pill">{{ task.status }}{% if task.approve == 0 %} (under review){% endif %}</span>
+                    {% else %}
+                        <span class="badge bg-success rounded-pill">{{ task.status }}{% if task.approve == 0 %} (under review){% endif %}</span>
+                    {% endif %}
+
+                </li>
+            {% endif %}
+        {% endfor %}
+        </ol>
+
+        <p>Status: <i>{{ project.status }}</i></p>
+        <p>Created: <b>{{ project.created_date }}</b> Edited: <b>{{ project.last_modified_date }}</b></p>
+
+        {% if status_id == 2 %}
+            <p><a class="btn btn-dark" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Add a task</a></p>
+
+
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <form method="post">
+                        <label for="title">Task title</label>
+                        <input type="text" id="title" name="title"  class="form-control" required><br>
+
+                        <label for="description">Description</label><br>
+                        <textarea id="description" name="description" class="form-control"></textarea><br>
+
+                        <label for="user_id">User ID</label>
+                        <input type="number" id="user_id" name="user_id"  class="form-control" required><br>
+
+                        <input type="submit" value="Add" class="btn btn-dark">
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if status_id == 2 %}
+        <a href="/projects/{{ project.id }}/del" class="btn btn-danger">Delete</a>
+        <a href="/projects/{{ project.id }}/update" class="btn btn-success">Edite</a>
+    {% endif %}
+
+</div>
+{% endblock %}

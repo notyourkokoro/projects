@@ -1,0 +1,21 @@
+{% extends 'base-logout.html' %}
+
+{% block title %}
+Index
+{% endblock %}
+
+{% block body %}
+<div class="bg-dark text-secondary px-4 py-5 text-center content">
+    <div class="py-5">
+        <h1 class="display-5 fw-bold text-white">Create a new one</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="fs-5 mb-4">Create projects. Or join other teams. Complete tasks. Move on. Develop. Create.</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/signup" class="btn btn-outline-primary btn-lg px-4 me-sm-3 fw-bold">Create new</a>
+                <a href="/login" class="btn btn-outline-light btn-lg px-4">Continue</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

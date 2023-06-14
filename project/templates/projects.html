@@ -1,0 +1,31 @@
+{% extends 'base-login.html' %}
+
+{% block title %}
+Projects
+{% endblock %}
+
+{% block body %}
+<div class="container content">
+    <h1>All created projects</h1>
+
+    {% if table_of_projects|length > 0 %}
+
+        {% for el in table_of_projects %}
+        <div class="alert alert-secondary">
+            <h2>{{ el.title }}</h2>
+            <p>{{ el.description }}</p>
+            <p><b>{{ el.created_date }}</b></p>
+            <a href="/projects/{{ el.id }}" class="btn btn-primary">About the project</a>
+        </div>
+        {% endfor %}
+
+    {% else %}
+        <p>So far, you are not involved in any project</p>
+    {% endif %}
+
+    {% if current_user.status_id == 2 %}
+        <a href="/projects/create-project" class="btn btn-primary">Create a new project</a>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base-login.html' %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block body %}
+<div class="container content">
+    {% with success = get_flashed_messages(category_filter=['success']) %}
+        {% if success %}
+            <div class="alert alert-success" role="alert">
+                {{ success[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% with error = get_flashed_messages(category_filter=['error']) %}
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-sm-3">
+                <p class="mb-0">Username</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ current_user.username }}</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">User ID</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ current_user.id }}</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ current_user.email }}</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Status</p>
+            </div>
+
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ status }}</p>
+            </div>
+
+            <br><br>
+
+            {% if current_user.status_id == 1 %}
+                <a href="/profile/update" class="btn btn-success">Become a leader</a>
+            {% else %}
+                <a class="btn btn-dark" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Add a new user to the project</a></p>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        <form method="post">
+                            <label for="project_id">Project name</label>
+                            <select id="project_id" name="project_id" class="form-control" required>
+                                {% for el in table_of_projects %}
+                                    <option value="{{ el.id }}">{{ el.title }}</option>
+                                {% endfor %}
+                            </select><br>
+
+                            <label for="user_id">User ID</label>
+                            <input type="number" id="user_id" name="user_id"  class="form-control" required><br>
+
+                            <input type="submit" value="Add" class="btn btn-dark">
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

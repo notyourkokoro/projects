@@ -1,0 +1,28 @@
+{% extends 'base-login.html' %}
+
+{% block title %}
+Update project
+{% endblock %}
+
+{% block body %}
+<div class="container content">
+    <h1>Update project</h1>
+    <form method="POST">
+        <label for="title">Project name</label>
+        <input type="text" id="title" name="title" class="form-control" value="{{ project.title }}" placeholder="Введите название проекта" required><br>
+
+        <label for="description">Description</label><br>
+        <textarea id="description" name="description" class="form-control">{{ project.description }}</textarea><br>
+
+        <label for="status">Status</label>
+        <select id="status" name="status" class="form-control" required>
+            <option value="active">Active</option>
+            <option value="frozen">Frozen</option>
+            <option value="rejected">Rejected</option>
+            <option value="completed">Completed</option>
+        </select><br>
+
+        <input type="submit" value="Update project" class="btn btn-success">
+    </form>
+</div>
+{% endblock %}
