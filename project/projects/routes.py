@@ -68,8 +68,10 @@ def project_detail(project_id):
     user_id = current_user.id
     status_id = current_user.status_id
 
+    user_flag = project_id in [el.project_id for el in current_user.projects]
+
     # администраторы и лидеры проекта могут просматривать все задачи в нем
-    if status_id == 3 or status_id == 2:
+    if status_id == 3 or (status_id == 2 and user_flag):
         if request.method == 'POST':
             title = request.form['title']
             description = request.form['description']
@@ -85,7 +87,7 @@ def project_detail(project_id):
 
     # обычный пользователь может просматривать только свои задачи
     else:
-        if project_id in [el.project_id for el in current_user.projects]:
+        if user_flag:
             return render_template('/project-detail.html', project=project, status_id=status_id, user_id=user_id)
         return redirect('/no-access')
 
